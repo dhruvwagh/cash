@@ -88,7 +88,16 @@ std::any find(c_map *pool, int16_t Key) {
     c_map map = *pool;
     auto f = map.find(Key);
     std::pair<int16_t, std::any> d_pair = f->second;
+    for (auto i: map) {      // increasing the age
+        i.second.first += 1;
+    }
     return d_pair.second;
 }
+
+void change_value(int16_t key, std::any new_d, c_map *pool) {
+    c_map map = *pool;
+    map.at(key).second = new_d;
+}
+
 
 #endif //CASH_LIBRARY_H
