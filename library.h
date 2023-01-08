@@ -66,6 +66,12 @@ Item create_item(std::any val, c_map *pid) {
     return i;
 }
 
+void increase_age(c_map *pool) {
+    c_map map = *pool;
+    for (auto i: map) {      // increasing the age
+        i.second.first += 1;
+    }
+}
 //checks if map is empty before, to be added, option to choose eviction policy.
 
 void insert_key(Item i) {
@@ -80,6 +86,7 @@ void insert_key(Item i) {
         evict_LRU(i.pool);
     }
     map.insert(kv_pair);
+    increase_age(i.pool);
 }
 
 //finding an element
@@ -88,9 +95,7 @@ std::any find(c_map *pool, int16_t Key) {
     c_map map = *pool;
     auto f = map.find(Key);
     std::pair<int16_t, std::any> d_pair = f->second;
-    for (auto i: map) {      // increasing the age
-        i.second.first += 1;
-    }
+    increase_age(pool);
     return d_pair.second;
 }
 
@@ -98,6 +103,5 @@ void change_value(int16_t key, std::any new_d, c_map *pool) {
     c_map map = *pool;
     map.at(key).second = new_d;
 }
-
 
 #endif //CASH_LIBRARY_H
