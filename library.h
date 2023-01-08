@@ -105,4 +105,14 @@ void change_value(int16_t key, std::any new_d, c_map *pool) {
     increase_age(pool);
 }
 
+void flush(c_map *pool) {
+    c_map map = *pool;
+    map.clear();
+}
+
+int16_t get_size(c_map *pool) {
+    c_map map = *pool;
+    return map.size();
+}
+
 #endif //CASH_LIBRARY_H
