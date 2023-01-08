@@ -102,6 +102,7 @@ std::any find(c_map *pool, int16_t Key) {
 void change_value(int16_t key, std::any new_d, c_map *pool) {
     c_map map = *pool;
     map.at(key).second = new_d;
+    increase_age(pool);
 }
 
 #endif //CASH_LIBRARY_H
