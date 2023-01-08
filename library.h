@@ -82,4 +82,13 @@ void insert_key(Item i) {
     map.insert(kv_pair);
 }
 
+//finding an element
+
+std::any find(c_map *pool, int16_t Key) {
+    c_map map = *pool;
+    auto f = map.find(Key);
+    std::pair<int16_t, std::any> d_pair = f->second;
+    return d_pair.second;
+}
+
 #endif //CASH_LIBRARY_H
