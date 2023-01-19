@@ -10,6 +10,8 @@
 #include<list>
 #include <algorithm>
 
+using namespace std;
+
 
 /*namespace Cache {
     int PoolId = 0;
@@ -20,9 +22,13 @@
 //defining an item:
 
 struct Item {
-    static std::any d;
-    static std::string Key;
-    static int16_t age;
+    std::any d;
+    std::string Key;
+    int16_t age;
+
+    bool operator==(const Item &b) const {
+        return (Key == b.Key);
+    }
 };
 typedef std::unordered_map<std::string, Item *> c_map;
 std::map<c_map *, std::list<Item>> pool_list;
@@ -91,23 +97,34 @@ void update_pos(c_map *poolid, Item i) {
     Item a = i;
     std::list<Item> ls = it->second;
     std::list<Item>::iterator it1 = std::find(ls.begin(), ls.end(), i);
+
 }
 
-Item find(c_map *pool, std::string Key) {
-    c_map map = *pool;
+Item access(c_map *pool, std::string Key) {
+    /*c_map map = *pool;
     auto f = map.find(Key);
     Item i = *f->second;
-    update_pos(pool, i);
-    return i;
+    update_pos(pool, i);*/
+    c_map map = *pool;
+    auto it = pool_list.find(pool);
+    auto it1 = map.find(Key);
+    Item *i = it1->second;
+    std::list<Item> ls = it->second;
+    update_pos(pool, *i);
+    return *i;
 }
 
-void change_value(int16_t key, std::any new_d, c_map *pool) {
+void change_value(string key, std::any new_d, c_map *pool) {
     c_map map = *pool;
-
+    Item i = access(pool, key);
+    i.d = new_d;
 }
 
 void flush(c_map *pool) {
     c_map map = *pool;
+    auto it = pool_list.find(pool);
+    list<Item> ls = it->second;
+    ls.clear();
     map.clear();
 }
 
